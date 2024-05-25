@@ -8,6 +8,9 @@ import (
 	"nis3607/core"
 )
 
+// Create a Consensus object according to node config.
+// Call `go c.Run()` to serve the node.
+// Wait for testTime seconds and terminate.
 func main() {
 	//default: 7 nodes
 	id := flag.Int("i", 0, "[node id]")

@@ -12,6 +12,8 @@ type MyLogger struct {
 	logger *log.Logger
 }
 
+// Open a log file at the root directory of the project, and return a logger
+// MyLogger.Debug always set to true.
 func InitLogger(name string, id uint8) *MyLogger {
 	logfile := "../log/" + name + strconv.Itoa(int(id)) + ".log"
 	f, err := os.OpenFile(logfile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0777)

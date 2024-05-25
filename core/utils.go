@@ -19,7 +19,7 @@ type Configuration struct {
 	Id        uint8    `json:"id"`
 	N         uint8    `json:"n"`
 	Port      uint64   `json:"port"`
-	Committee []uint64 `json:"committee"`
+	Committee []uint64 `json:"committee"` // committee members' ports
 	BlockSize uint64   `json:"blocksize"`
 }
 

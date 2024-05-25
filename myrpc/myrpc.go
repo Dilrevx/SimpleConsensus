@@ -20,6 +20,10 @@ func (e *ClientEnd) Connect() {
 
 }
 
+// A wrapper for rpc.Call
+// args:
+// svcMeth: service name and method name, e.g., "Arith.Add"
+// reply: the reply from the server, should be a pointer though looks like a value
 func (e *ClientEnd) Call(svcMeth string, args interface{}, reply interface{}) bool {
 	// c, err := rpc.DialHTTP("tcp", "127.0.0.1:"+strconv.Itoa(int(e.Port)))
 	// if err != nil {

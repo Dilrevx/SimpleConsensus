@@ -7,21 +7,28 @@ import (
 	"time"
 )
 
+// Contains seq and Data(dynamic length, not hard-coded)
 type Block struct {
 	Seq  uint64
 	Data []byte
 }
 
+// Local representation of a blockchain
+// Contains []*Block, blocksMap, keysMap
+// Thread-safe with a mutex
+//
+// Blockchain have a independent logger
 type BlockChain struct {
-	Id        uint8
-	BlockSize uint64
-	Blocks    []*Block
+	Id        uint8    // node id
+	BlockSize uint64   // block size
+	Blocks    []*Block // block array
 	BlocksMap map[string]*Block
 	KeysMap   map[*Block]string
 	logger    *mylogger.MyLogger
 	mu        sync.Mutex
 }
 
+// Initialize chain with 1024 blocks, empty blocksMap and keysMap
 func InitBlockChain(id uint8, blocksize uint64) *BlockChain {
 	blocks := make([]*Block, 1024)
 	blocksMap := make(map[string]*Block)
@@ -44,6 +51,7 @@ func Block2Hash(block *Block) []byte {
 	return hash
 }
 
+// key is a 20-byte ascii
 func Hash2Key(hash []byte) string {
 	var key []byte
 	for i := 0; i < 20; i++ {
@@ -55,6 +63,8 @@ func Block2Key(block *Block) string {
 	return Hash2Key(Block2Hash(block))
 }
 
+// Thread-safe, append a block to the chain
+// Internal have nothing to do with consensus, just append in a lock context
 func (bc *BlockChain) AddBlockToChain(block *Block) {
 	bc.mu.Lock()
 	defer bc.mu.Unlock()
@@ -79,6 +89,7 @@ func (bc *BlockChain) getBlock(seq uint64) *Block {
 	return block
 }
 
+// commit block to local BlockChain object
 func (bc *BlockChain) commitBlock(block *Block) {
 	bc.AddBlockToChain(block)
 	bc.logger.DPrintf("commit Block[%v] in seq %v at %v", Block2Key(block), block.Seq, time.Now().UnixNano())

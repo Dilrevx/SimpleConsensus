@@ -23,7 +23,7 @@ package myrpc
 
 type ConsensusMsg struct {
 	// Type MessageType
-	From uint8
+	From uint8 // Maybe unused
 	Seq  uint64
 	Data []byte
 }
